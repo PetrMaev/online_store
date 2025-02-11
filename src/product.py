@@ -23,13 +23,12 @@ class Product:
         return self.__price
 
     @price.setter
-    def price(self, price):
-        if price <= 0:
+    def price(self, new_price):
+        if new_price <= 0:
             print('Цена не должна быть нулевая или отрицательная')
             return
-        elif price > 0:
-            self.__price = price
-            return
+        else:
+            self.__price = new_price
 
 
 class Category:
@@ -46,20 +45,20 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(products)
 
-    @property
-    def products(self):
-        return self.__products
-
     def add_product(self, new_product: Product):
         self.__products.append(new_product)
-        Category.category_count += 1
+        Category.product_count += 1
 
     @property
-    def product_list(self):
+    def products(self):
         product_str = ''
         for product in self.__products:
-            product_str += f'{product.name} {product.price} руб. Остаток: {product.quantity} шт.'
+            product_str += f'{product.name} {product.price} руб. Остаток: {product.quantity} шт.\n'
         return product_str
+
+    @property
+    def products_in_list(self):
+        return self.__products
 
 
 if __name__ == "__main__":
