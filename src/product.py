@@ -56,7 +56,7 @@ class Category:
         if self.name == 'Смартфоны':
             for product in self.__products:
                 self.total_quantity += product.quantity
-            return f'{self.name}, количество продуктов: {self.total_quantity}'
+            return f'{self.name}, количество продуктов: {self.total_quantity} шт.'
         else:
             return 'Другая категория'
 
