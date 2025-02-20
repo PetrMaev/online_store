@@ -14,6 +14,16 @@ def product_for_test():
 
 
 @pytest.fixture
+def product_for_test_2():
+    return Product(
+        name='Стол',
+        description='Круглый, белый',
+        price=5000.0,
+        quantity=3
+    )
+
+
+@pytest.fixture
 def first_category():
     return Category(
         name='Мебель',
@@ -33,5 +43,17 @@ def second_category():
         products=[
             Product(name='Чашка', description='Большая, белая', price=300.0, quantity=16),
             Product(name='Ложка', description='Чайная, гравированная', price=200.0, quantity=27)
+        ]
+    )
+
+
+@pytest.fixture
+def first_category_phones():
+    return Category(
+        name='Смартфоны',
+        description='Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни',
+        products=[
+            Product(name='Nokia 3210', description='Неубиваемый', price=1000.0, quantity=4),
+            Product(name='Motorolla C115', description='Круглый корпус', price=2000.0, quantity=3)
         ]
     )
