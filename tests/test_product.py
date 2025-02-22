@@ -1,3 +1,6 @@
+import pytest
+
+
 def test_product(product_for_test):
     assert product_for_test.name == 'Стул'
     assert product_for_test.description == 'Деревянный, для кухни'
@@ -46,3 +49,9 @@ def test_category_str_2(first_category_phones):
 
 def test_product_add(product_for_test, product_for_test_2):
     assert product_for_test + product_for_test_2 == 19000
+
+
+def test_category_add_error(first_category, first_product_grass, capsys):
+    first_category.add_product(first_product_grass)
+    captured = capsys.readouterr()
+    assert captured.out == ''
