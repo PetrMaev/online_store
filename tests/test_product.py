@@ -1,6 +1,3 @@
-import pytest
-
-
 def test_product(product_for_test):
     assert product_for_test.name == 'Стул'
     assert product_for_test.description == 'Деревянный, для кухни'
