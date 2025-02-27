@@ -1,3 +1,8 @@
+import pytest
+
+from src.product import Product
+
+
 def test_product(product_for_test):
     assert product_for_test.name == 'Стул'
     assert product_for_test.description == 'Деревянный, для кухни'
@@ -51,4 +56,25 @@ def test_product_add(product_for_test, product_for_test_2):
 def test_category_add_error(first_category, first_product_grass, capsys):
     first_category.add_product(first_product_grass)
     captured = capsys.readouterr()
-    assert captured.out == ''
+    assert captured.out == ('Продукт добавлен успешно\n'
+                            'Обработка добавления продукта завершена\n')
+
+
+def test_middle_price(first_category_phones, category_without_price):
+    assert first_category_phones.middle_price() == 1500
+    assert category_without_price.middle_price() == 0
+
+
+def test_product_without_quantity():
+    with pytest.raises(ValueError):
+        Product(name='Nokia 3210', description='Неубиваемый', price=1000.0, quantity=0)
+
+
+def test_custom_exception(capsys, first_category):
+    assert len(first_category.products_in_list) == 2
+
+    product_add = Product("Бракованный товар", "Неверное количество", 1000.0, 2)
+    first_category.add_product(product_add)
+    message = capsys.readouterr()
+    assert message.out.strip().split('\n')[-2] == 'Продукт добавлен успешно'
+    assert message.out.strip().split('\n')[-1] == 'Обработка добавления продукта завершена'
