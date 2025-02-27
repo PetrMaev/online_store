@@ -1,5 +1,6 @@
 from src.base_product import BaseProduct
 from src.print_mixin import PrintMixin
+from src.exceptions import ZeroQuantityProduct
 
 
 class Product(BaseProduct, PrintMixin):
@@ -73,8 +74,17 @@ class Category:
 
     def add_product(self, new_product: Product):
         if isinstance(new_product, Product):
-            self.__products.append(new_product)
-            Category.product_count += 1
+            try:
+                if new_product.quantity == 0:
+                    raise ZeroQuantityProduct('Нельзя добавить продукт с нулевым количеством')
+            except ZeroQuantityProduct as e:
+                print(str(e))
+            else:
+                self.__products.append(new_product)
+                Category.product_count += 1
+                print('Продукт добавлен успешно')
+            finally:
+                print('Обработка добавления продукта завершена')
         else:
             raise TypeError
 
@@ -157,3 +167,6 @@ if __name__ == "__main__":
 
     category_empty = Category("Пустая категория", "Категория без продуктов", [])
     print(category_empty.middle_price())
+
+    product6 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 2)
+    category1.add_product(product6)
