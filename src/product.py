@@ -149,6 +149,7 @@ if __name__ == "__main__":
     print(Category.category_count)
     print(Category.product_count)
 
+    # код для проверки 17.1
     try:
         product_invalid = Product("Бракованный товар", "Неверное количество", 1000.0, 0)
     except ValueError as e:
@@ -168,5 +169,6 @@ if __name__ == "__main__":
     category_empty = Category("Пустая категория", "Категория без продуктов", [])
     print(category_empty.middle_price())
 
+    # product5 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, -2)
     product6 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 2)
     category1.add_product(product6)
