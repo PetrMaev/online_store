@@ -1,5 +1,6 @@
 from src.base_product import BaseProduct
 from src.print_mixin import PrintMixin
+from src.exceptions import ZeroQuantityProduct
 
 
 class Product(BaseProduct, PrintMixin):
@@ -12,7 +13,10 @@ class Product(BaseProduct, PrintMixin):
         self.name = name
         self.description = description
         self.__price = price
-        self.quantity = quantity
+        if quantity > 0:
+            self.quantity = quantity
+        else:
+            raise ValueError('Товар с нулевым количеством не может быть добавлен')
         super().__init__()
 
     def __str__(self):
@@ -70,8 +74,17 @@ class Category:
 
     def add_product(self, new_product: Product):
         if isinstance(new_product, Product):
-            self.__products.append(new_product)
-            Category.product_count += 1
+            try:
+                if new_product.quantity == 0:
+                    raise ZeroQuantityProduct('Нельзя добавить продукт с нулевым количеством')
+            except ZeroQuantityProduct as e:
+                print(str(e))
+            else:
+                self.__products.append(new_product)
+                Category.product_count += 1
+                print('Продукт добавлен успешно')
+            finally:
+                print('Обработка добавления продукта завершена')
         else:
             raise TypeError
 
@@ -85,6 +98,12 @@ class Category:
     @property
     def products_in_list(self):
         return self.__products
+
+    def middle_price(self):
+        try:
+            return sum([product.price for product in self.__products]) / len(self.__products)
+        except ZeroDivisionError:
+            return 0
 
 
 if __name__ == "__main__":
@@ -129,3 +148,27 @@ if __name__ == "__main__":
 
     print(Category.category_count)
     print(Category.product_count)
+
+    # код для проверки 17.1
+    try:
+        product_invalid = Product("Бракованный товар", "Неверное количество", 1000.0, 0)
+    except ValueError as e:
+        print(
+            "Возникла ошибка ValueError прерывающая работу программы при попытке добавить продукт с нулевым количеством")
+    else:
+        print("Не возникла ошибка ValueError при попытке добавить продукт с нулевым количеством")
+
+    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
+
+    category1 = Category("Смартфоны", "Категория смартфонов", [product1, product2, product3])
+
+    print(category1.middle_price())
+
+    category_empty = Category("Пустая категория", "Категория без продуктов", [])
+    print(category_empty.middle_price())
+
+    # product5 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, -2)
+    product6 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 2)
+    category1.add_product(product6)

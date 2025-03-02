@@ -63,7 +63,7 @@ def first_category_phones():
 @pytest.fixture
 def first_product_smartphone():
     return Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5,
-                         "S23 Ultra", 256, "Серый")
+                      "S23 Ultra", 256, "Серый")
 
 
 @pytest.fixture
@@ -79,3 +79,15 @@ def first_product_grass():
 @pytest.fixture
 def second_product_grass():
     return LawnGrass("Газонная трава 2", "Выносливая трава", 450.0, 15, "США", "5 дней", "Темно-зеленый")
+
+
+@pytest.fixture
+def category_without_price():
+    return Category(
+        name='Мебель',
+        description='Мебель не только для комфорта, но и часть стильного дизайна',
+        products=[
+            Product(name='Стул', description='Деревянный, для кухни', price=0, quantity=4),
+            Product(name='Стол', description='Круглый, белый', price=0, quantity=3)
+        ]
+    )
